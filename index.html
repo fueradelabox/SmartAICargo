@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartAICargo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar for webkit browsers */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #2c3035; /* Darker track for new design */
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #40474f; /* Lighter thumb for new design */
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a2abb3;
+    }
+    body {
+      font-family: 'Inter', "Noto Sans", sans-serif;
+      min-height: 100vh; /* Ensure body takes full height */
+      position: relative; /* Context for z-indexed children if needed, though fixed usually doesn't require it */
+    }
+    /* Increase base font size slightly on smaller screens for readability */
+    @media (max-width: 768px) {
+      body {
+        font-size: 100%;
+      }
+      .mobile-tap-target {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    /* Animated Routes Background */
+    .animated-routes-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* Place it behind all other content */
+      background-image: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 30px,                   /* Space between lines */
+          rgba(100, 116, 139, 0.06) 30px,    /* Line color (slate-ish) - Increased alpha */
+          rgba(100, 116, 139, 0.06) 31px     /* Line thickness (1px) - Increased alpha */
+        );
+      background-size: 60px 60px; /* Controls the density of the pattern */
+      animation: moveRoutes 40s linear infinite; /* Animation speed and loop */
+    }
+
+    @keyframes moveRoutes {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 60px 60px; /* Moves the pattern diagonally */
+      }
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "@/": "./",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.2",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "recharts": "https://esm.sh/recharts@^2.15.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.5.1",
+    "@vis.gl/react-google-maps": "https://esm.sh/@vis.gl/react-google-maps@^0.11.2"
+  }
+}
+</script>
+</head>
+<body class="bg-[#121416] text-[#a2abb3] dark group/design-root">
+  <div class="animated-routes-background"></div>
+  <div id="root" class="flex flex-col min-h-screen"></div>
+  <script>
+    // Polyfill for crypto.randomUUID for Safari and other browsers that might not support it natively
+    if (typeof window.crypto !== 'undefined' && typeof window.crypto.randomUUID === 'undefined') {
+      window.crypto.randomUUID = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+          const r = (Math.random() * 16) | 0;
+          const v = c === 'x' ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        });
+      };
+    }
+  </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
